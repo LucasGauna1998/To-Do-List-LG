@@ -4,7 +4,7 @@
     /**--FUENTES--**/
     --fuentePrimaria:'Raleway', sans-serif;
     --fuenteSecundaria: 'Raleway Dots', cursive;
-    --fuenteParrafo: 'Poppins', sans-serif;
+    --fuenteParrafo: 'Poppins', sans-serif;  
 
     /**--COLORES**/
     --colorPrimario: #1572A1;
@@ -69,6 +69,15 @@ button {
     border-radius: .8rem;
 }
 
+.btn {
+    width: 100%;
+    font-size: 2.1rem;
+    padding: .5rem 0;
+    display: block;
+    text-align: center;
+    height: auto;
+}
+
 
 .boton:hover,
 .btn {
@@ -81,25 +90,27 @@ button {
 .success {
     background-color: var(--success);
 }
-
+.success  p {
+    color: var(--blanco);
+}
 .delete {
     background-color: var(--delete);
 }
 
-.icon-delete {
-    color: var(--delete);
-}
-.icon-success {
-    color: var(--success);
+.icon {
+    color: var(--blanco);
 }
 
-.message p {
+.message {
     border-radius: 1rem;
+}
+.message p {
     padding: .9rem 3rem;
     text-align: center;
     font-weight: 700;
     color: var(--blanco);
 }
+
 /**--STYLES--**/
 
 .header h1 {
@@ -148,6 +159,16 @@ button {
     }
 }
 
+.info-tarea {
+    display: flex;
+    gap: 2rem;
+}
+
+.info-tarea input {
+    display: block;
+    flex: 1;
+    margin-bottom: 1.3rem;
+}
 
 .contenido-principal .list-task {
     padding-left: 1rem;
@@ -158,38 +179,53 @@ button {
 .group-task {
     list-style: none;
     padding: 0;
+    
 }
 .group-task .task {
-    padding: 1rem 2rem;
-    border-radius: 1rem;
+    
+    border-radius:  0 0 2rem 2rem;
+    margin-bottom: 1rem;
     margin-bottom: 2rem;
+    overflow: hidden;
 }
 
-@media (min-width: 544px) {
-    .group-task .task {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-}
 
 button span.icon{
     font-size: 3.4rem;
 }
 
-.task {
-    display: flex;
-    justify-content: space-between;
-}
-.task form {
-    display: flex;
-    justify-content: center;
-    gap: .5rem;
-}
 
-.success  p {
+.task p.fecha{
+    background-color: #1572A1;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.8rem;
+    margin: 0;
     color: var(--blanco);
 }
+p.fecha span {
+    font-size: 2.2rem;
+}
+
+p.texto-tarea {
+    text-align: center;   
+}
+
+p.hora {
+    text-align: center;
+    
+}
+
+p.hora span {
+    font-size: 1.9rem;
+}
+
+.task .actions {
+    display: flex;
+    border-radius: inherit;
+    justify-content: center;
+}
+
 
 .footer p {
     text-align: center;

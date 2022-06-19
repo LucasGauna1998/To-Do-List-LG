@@ -38,11 +38,11 @@
                     </svg>
                 </span>
             </h3>
-            <form action="" class="formulario">
+            <form action="" class="formulario" id="formulario-tarea">
                 <textarea id="tarea"></textarea>
                 <div class="info-tarea">
-                    <input type="date">
-                    <input type="time">
+                    <input type="date" id="fecha">
+                    <input type="time" id="hora">
                 </div>
                 <input type="submit" value="ADD TASK" id="btn-add" class="boton primario">
             </form>
@@ -64,16 +64,8 @@
                     </svg>
                 </span>
             </h3>
-            <ul class="group-task">
-                <li class="task sombra">
-                    <p>dasdsadasads</p>
-                    <div class="actions">
-                        <form class="form-acctions" method="#" acction="#"><button class="complete"><span class="icon fa-regular fa-circle-check icon-success"></span></button><button class="delete-task"><span class="icon fa-regular fa-trash-can icon-delete"></span></button>
-                        </form>
-                    </div>
-                    <p><i class="fa-solid fa-calendar-days"></i>23/06/15</p>
-                    <p><i class="fa-solid fa-clock"></i>16:40</p>
-                </li>
+            <ul class="group-task" id="group-task">
+                
             </ul>
             <!--.group-task-->
         </section>

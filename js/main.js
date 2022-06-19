@@ -1,312 +1,125 @@
+//VARIABLES
+const formulario = document.querySelector('#formulario-tarea');
+const tarea = document.querySelector('#tarea');
+const fecha = document.querySelector('#fecha');
+const hora = document.querySelector('#hora');
+const contenedorMensajes = document.querySelector('.message');
+const ulTareas = document.querySelector('#group-task');
 
+//EVENTLISTERNERS
 
-//VARIABLES PANEL TASK
-let btnAddTask = document.querySelector('#btn-add');
-let texTarea = document.querySelector('#tarea');
+eventListeners();
 
+function eventListeners(){
 
-//VARIABLES LIST TASK
-let groupTask = document.querySelector('.group-task');
-let task = document.querySelector('.task');
-
-//DB
-let DBLS = localStorage;
-let tareas = [];
-
-
-obtenerUsuario();
-saludarUsuario();
-
-function obtenerUsuario () {
-    
-    if (!DBLS.getItem('usuario')){
-        let usuario = prompt('Hola, Ingrese su nombre para tener una mejor experiencia');
-        DBLS.setItem('usuario', usuario);
-    }
-}
-
-function saludarUsuario () {
-
-    let usuario = DBLS.getItem('usuario');
-    let saludo = document.createElement('H4');
-    saludo.classList.add('saludo');
-    saludo.innerHTML = `Hola <span>${usuario}</span> que tarea vamos a realizar hoy?`;
-
-    document.querySelector('.panel-task').prepend(saludo);
-
-}
-
-texTarea.addEventListener('keypress', function(e) {
-    
-    if (e.charCode == 13) {
-        agegarTarea();
-    }
-})  
-
-
-if (DBLS.getItem('tareas')) {
-    mostrarTareasDOM();
+    formulario.addEventListener( 'submit', agregarTarea );
 }
 
 
 
-//Agregar Tarea
-btnAddTask.addEventListener('click', agegarTarea);
+function agregarTarea( e ){
+    e.preventDefault();
 
-function agegarTarea (e) {
-
-    event.preventDefault();
-    if(validarTarea()){
-
-    let tareaOBJ = {
-        tarea : texTarea.value,
-        estado : '',
-    }
-    
-    agregarTareaLS( texTarea.value );
-    
-
-
-    let divTarea = document.createElement('LI');
-    divTarea.classList.add('task','sombra');
-    let parrafoTarea = document.createElement('P');
-
-    parrafoTarea.innerHTML = texTarea.value;
-    divTarea.appendChild(parrafoTarea);
-    
-    
-    //Creamos el contenedor de acciones
-    let contenedorActions = document.createElement('DIV');
-    contenedorActions.classList.add('actions');
-
-    
-    //Creamos las acciones y las agregamos las acciones
-    let botonSucces = document.createElement('button');
-    botonSucces.classList.add('complete');
-    let botonDelete = document.createElement('button');
-    botonDelete.classList.add('delete-task');
-    botonSucces.innerHTML = `<span class="icon fa-regular fa-circle-check icon-success"></span>`;
-    botonDelete.innerHTML = `<span class="icon fa-regular fa-trash-can icon-delete"></span>`;
-
-    let actions = document.createElement('FORM');
-    actions.classList.add('form-acctions');
-    actions.setAttribute('method', '#');
-    actions.setAttribute('acction', '#');
-    actions.appendChild(botonSucces);
-    actions.appendChild(botonDelete);
-    
-
-    //Añadimos las acciones al contenedor
-    contenedorActions.appendChild(actions);
-
-    divTarea.appendChild(contenedorActions);
-
-    groupTask.appendChild(divTarea);
+    const tareaObj = {
+        tarea : tarea.value,
+        fecha : fecha.value,
+        hora : hora.value,
+        estado : 'PENDIENTE'
     }
 
-    //Funcionalidades de las acciones
-    //Eliminar Tarea
-    let botonesDelete = document.querySelectorAll('.delete-task');
-  
-    botonesDelete.forEach( botonEliminar => {
-        botonEliminar.addEventListener('click', eliminarTarea);
-    })
-    
-    //Marcar Como completada
-    let botonesComplete = document.querySelectorAll('.complete');
-
-    botonesComplete.forEach( botonCompleto => {
-        botonCompleto.addEventListener('click', tareaCompletada);
-    })
-   
-    
+    if ( validarCampos (tareaObj) ){
+        //Crea el HTML de la tarea
+        console.log('hola');
+        crearHTML( tareaObj );
+    }
     
 }
 
+function validarCampos( tareaObj ) {
 
-function validarTarea () {
-    let divMessage = document.querySelector('.message');
-    let tarea = texTarea.value;
-    
-   
-    if (tarea.length < 3 || tarea.length == ""){
-        if(divMessage.firstElementChild) {
+    const { tarea, fecha, hora } = tareaObj;
 
-            parrafoError.remove();
-        }
-        let parrafoError = document.createElement('P');
-        parrafoError.classList.add('delete', 'sombra');
-        parrafoError.innerHTML = "La tarea no puede ir vacia";
-        divMessage.appendChild(parrafoError);
-        
-        setTimeout( ( ) => {
+    if ( tarea == '' || fecha == '' || hora == '') {
+        mostrarMensaje('Todos los campos son obligatorios', 'delete')
 
-            parrafoError.remove();
-        },1500)
-        
-    
-        
-        
         return false;
-        
     }else {
-        
-        let parrafoSucces = document.createElement('P');
-        parrafoSucces.classList.add('success', 'sombra');
-        parrafoSucces.innerHTML = 'Tarea Creada Exitosamente';
-        divMessage.appendChild(parrafoSucces);
-        
-        setTimeout( ( ) => {
-
-            parrafoSucces.remove();
-        },1500)
+        mostrarMensaje('Tarea creada exitosamente!', 'success')
         
         return true;
     }
-
+    
 }
 
 
+function mostrarMensaje( mensaje, clase ){
+    //MOSTRAR MENSAJES SEGÚN LOS ELEMENTOS
+    let divMensaje = document.createElement('div');
+    divMensaje.classList.add( clase, 'message' );
+    let parrafo = document.createElement('p');
+    parrafo.textContent = mensaje;
+    divMensaje.appendChild( parrafo );
 
-function eliminarTarea (event) {
-
-    event.preventDefault();
-    let botonTrash = event.target.parentElement;
-    
-    if (botonTrash.classList == 'delete-task'){
-        let tareaParrafo = botonTrash.parentElement.parentElement;
-        tareaParrafo = tareaParrafo.previousSibling.textContent;
-        let tarea = botonTrash.parentElement.parentElement.parentElement;
-        eliminarTareaLS(tareaParrafo);
-        tarea.remove();
-        
-    }else{
-        let tarea = botonTrash.parentElement.parentElement;
-        tarea.remove();
+    if ( clase == 'error' ){
+        //LIMPIAR HTML PARA NO MOSTRAR MULTIPLES VECES LOS MENSAJES
+        contenedorMensajes.textContent = '';
+        contenedorMensajes.appendChild( divMensaje );
+        setTimeout( () => {
+            divMensaje.remove();
+        },1500)
+    }else {
+        //LIMPIAR HTML PARA NO MOSTRAR MULTIPLES VECES LOS MENSAJES
+        contenedorMensajes.textContent = '';
+        contenedorMensajes.appendChild( divMensaje );
+        setTimeout( () => {
+            divMensaje.remove();
+        },2000)
     }
 
 }
 
-function tareaCompletada(event) {
-    event.preventDefault();
-    let estado;
-    let botonComplete = event.target.parentElement;
+function crearHTML( tareaObj ){
+    console.log('hola');
+    const {tarea, fecha, hora, estado } = tareaObj;
+    //Formato Fecha
+    let nuevaFecha = fecha.split('-');
+    nuevaFecha = ` ${nuevaFecha[2]}/${nuevaFecha[1]}/${nuevaFecha[0]}`;
+    
 
-    if (botonComplete.classList == 'complete'){
+    //Contenedor Tarea
+    let li = document.createElement('li');
+    li.classList.add( 'task', 'sombra' );
+    //Fecha Tare
+    let parrafoFecha = document.createElement('p');
+    parrafoFecha.classList.add('fecha');
+    parrafoFecha.innerHTML = `<span class="fa-solid fa-calendar-days"></span> ${nuevaFecha}`;
+    //Texto Tarea
+    let parrafoTarea = document.createElement('p');
+    parrafoTarea.classList.add('texto-tarea');
+    parrafoTarea.textContent = tarea;
+    //Hora Tarea
+    let parrafoHora = document.createElement('p');
+    parrafoHora.classList.add('hora');
+    parrafoHora.innerHTML = `<span class="fa-solid fa-clock"></span> ${hora}`;
+    //Acciones Tareas
+    let divActions = document.createElement('div');
+    divActions.classList.add('actions');
+    //Boton Completo
+    let btnCompleto = document.createElement('a');
+    btnCompleto.classList.add( 'btn', 'complete', 'success' );
+    btnCompleto.innerHTML = `<span class="icon fa-regular fa-circle-check"></span>`;
 
-        let tarea = botonComplete.parentElement.parentElement.parentElement;
-        tarea.classList.add('success');
-        botonComplete.remove();
-        
-        
-    }else if(botonComplete.classList == 'icon') {
-        let contenedorBoton = botonComplete.parentElement.parentElement;
-        let tarea = contenedorBoton.parentElement.parentElement;
-        tarea.classList.add('success'); 
-    }else{
-        let tarea = botonComplete.parentElement.parentElement;
-        tarea.classList.add('success');
-    }
-
-    return estado = "COMPLETO";
-   
+    //Boton Trash
+    let btnTrash = document.createElement('a');
+    btnTrash.classList.add( 'btn', 'delete-task', 'delete' );
+    btnTrash.innerHTML = `<span class="icon fa-regular fa-trash-can"></span>`;
+    //Agregamos los botones al contenedor de acciones
+    divActions.appendChild(btnCompleto);
+    divActions.appendChild(btnTrash);
+    //Agregamos la fecha, tarea, hora, contenedor aciones al LI - task
+    li.appendChild(parrafoFecha);
+    li.appendChild(parrafoTarea);
+    li.appendChild(parrafoHora);
+    li.appendChild(divActions);
+    ulTareas.appendChild(li);
 }
-
-function agregarTareaLS ( textoTarea ) {
-    
-    
-    
-
-    if ( !DBLS.getItem('tareas') ) {
-        
-        DBLS.setItem( 'tareas', JSON.stringify( [textoTarea] ) );
-        
-    }else {        
-        tareas.push( textoTarea );
-        let tareasDB = JSON.parse( DBLS.getItem('tareas') );
-
-        tareas.forEach( tarea => {
-
-            tareasDB.push( tarea );
-        })
-        
-        DBLS.setItem('tareas' , JSON.stringify( tareasDB ) );
-        tareas = [];
-        
-
-        return JSON.parse( DBLS.getItem('tareas') );        
-    }
- 
-}
-
-function mostrarTareasDOM ( tareas ) {
-    
-    tareas = JSON.parse( DBLS.getItem('tareas') );
-
-    tareas.forEach( tarea => {
-    
-    let divTarea = document.createElement('LI');
-    divTarea.classList.add('task','sombra');
-    let parrafoTarea = document.createElement('P');
-
-    parrafoTarea.innerHTML = tarea;
-    divTarea.appendChild(parrafoTarea);
-    
-    
-    //Creamos el contenedor de acciones
-    let contenedorActions = document.createElement('DIV');
-    contenedorActions.classList.add('actions');
-
-    
-    //Creamos las acciones y las agregamos las acciones
-    let botonSucces = document.createElement('button');
-    botonSucces.classList.add('complete');
-    let botonDelete = document.createElement('button');
-    botonDelete.classList.add('delete-task');
-    botonSucces.innerHTML = `<span class="icon fa-regular fa-circle-check icon-success"></span>`;
-    botonDelete.innerHTML = `<span class="icon fa-regular fa-trash-can icon-delete"></span>`;
-
-    let actions = document.createElement('FORM');
-    actions.classList.add('form-acctions');
-    actions.setAttribute('method', '#');
-    actions.setAttribute('acction', '#');
-    actions.appendChild(botonSucces);
-    actions.appendChild(botonDelete);
-    
-
-    //Añadimos las acciones al contenedor
-    contenedorActions.appendChild(actions);
-
-    divTarea.appendChild(contenedorActions);
-
-    groupTask.appendChild(divTarea);
-     //Funcionalidades de las acciones
-    //Eliminar Tarea
-    let botonesDelete = document.querySelectorAll('.delete-task');
-  
-    botonesDelete.forEach( botonEliminar => {
-        botonEliminar.addEventListener('click', eliminarTarea);
-    })
-    
-    //Marcar Como completada
-    let botonesComplete = document.querySelectorAll('.complete');
-
-    botonesComplete.forEach( botonCompleto => {
-        botonCompleto.addEventListener('click', tareaCompletada);
-    })
-    })
-    
-}
-
-
-function eliminarTareaLS ( tarea ) {
-    let tareasDB = JSON.parse( DBLS.getItem('tareas') );
-
-    let tareasNuevas = tareasDB.filter( tareaDB => tareaDB !== tarea );
-
-    DBLS.setItem('tareas', JSON.stringify( tareasNuevas) );
-
-}
-
-
-
