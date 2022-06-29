@@ -16,7 +16,15 @@
 
 <body>
     <header class="header">
-        <h1 class="borde">To Do List</h1>
+        <h1 class="borde">Lista de Tareas</h1>
+        <div class="fecha-hoy">
+            <p id="fecha-actual"></p>
+            <div class="reloj">
+                <div id="hora-actual">13</div>
+                <div id="minuto-actual">35</div>
+                <div id="segundo-actual">23</div>
+            </div>
+        </div>
     </header>
 
     <main class="contenido-principal contenedor">
@@ -41,15 +49,21 @@
             <form action="" class="formulario" id="formulario-tarea">
                 <textarea id="tarea"></textarea>
                 <div class="info-tarea">
-                    <input type="date" id="fecha">
-                    <input type="time" id="hora">
+                    <div class="campo">
+                        <label for="date">Fecha:</label>
+                        <input type="date" id="fecha">
+                    </div>
+                    <div class="campo">
+                        <label for="hora">Hora:</label>
+                        <input type="time" id="hora">
+                    </div>
                 </div>
-                <input type="submit" value="ADD TASK" id="btn-add" class="boton primario">
+                <input type="submit" value="Agregar Tarea" id="btn-add" class="boton primario">
             </form>
         </section>
         <!--.panel-task-->
         <section class="list-task">
-            <h3>Task
+            <h3>Tareas
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-check" width="44"
                         height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
@@ -74,7 +88,7 @@
     </main>
     <!--.contenido-principal-->
     <footer class="footer">
-        <p>Lucas Gauna Desarroladdor Web - 2022</p>
+        <p>Lucas Gauna & Ángel Aragón Web Development - 2022</p>
     </footer>
     <script src="https://kit.fontawesome.com/d10f5ae5d6.js" crossorigin="anonymous"></script>
     <script src="js/main.js"></script>

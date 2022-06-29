@@ -9,6 +9,7 @@
     /**--COLORES**/
     --colorPrimario: #1572A1;
     --colorSecundario: #9AD0EC;
+    --gris: #E3E3E3;
     --success: #54E346;
     --delete: #CF0000;
     --blanco: #FFFFFF;
@@ -86,6 +87,8 @@ button {
 
 .primario {
     background-color: var(--colorPrimario);
+    font-weight: 700;
+    text-transform: uppercase;
 }
 .success {
     background-color: var(--success);
@@ -125,6 +128,67 @@ button {
         column-gap: 2rem;
     }
 }
+/**--FECHA--**/
+#fecha-actual {
+    text-align: center;
+    font-size: 2.1rem;
+    font-family: var(--fuentePrimaria);
+
+}
+/**--RELOJ--**/
+.reloj {
+    
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.reloj p {
+    font-size: 2rem;
+    font-weight: 700;
+}
+#hora-actual,
+#minuto-actual,
+#segundo-actual {
+    padding: 1rem;
+    font-size: 2.4rem;
+    color: #FFFFFF;
+    height: 7rem;
+    width: 7rem;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 5%;
+    font-size: 3.1rem;
+}
+#hora-actual {
+    background-color: #18978F;
+    border-bottom: 35px solid #54BAB9;
+    
+}
+#minuto-actual {
+    background-color: #19456B;
+    border-bottom: 35px solid #11698E;
+}
+#segundo-actual {
+    background-color: #0D335D;
+    border-bottom: 35px solid #1A508B;
+}
+
+@media ( min-width: 786px ){
+    #hora-actual,
+    #minuto-actual,
+    #segundo-actual {
+        width: 8rem;
+        height: 8rem;
+        padding-top: 1.7%;
+
+        font-size: 3.9rem;
+    }
+    
+    
+}
 
 .panel-task h3,
 .list-task h3 {
@@ -160,14 +224,25 @@ button {
 }
 
 .info-tarea {
-    display: flex;
-    gap: 2rem;
+    
 }
 
+
+.campo {
+    margin-bottom: 1rem;
+    align-items: center;
+    display: flex;
+}
+.info-tarea label {
+    display: block;
+    color: var(--colorPrimario);
+    font-weight: 700;
+    font-size: 1.7rem;
+    flex: 1;
+}
 .info-tarea input {
     display: block;
     flex: 1;
-    margin-bottom: 1.3rem;
 }
 
 .contenido-principal .list-task {
